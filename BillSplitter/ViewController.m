@@ -9,6 +9,9 @@
 #import "ViewController.h"
 
 @interface ViewController ()
+@property (weak, nonatomic) IBOutlet UITextField *totalAmountTextField;
+@property (weak, nonatomic) IBOutlet UISlider *numberOfPeopleSlider;
+@property (weak, nonatomic) IBOutlet UILabel *splitAmountLabel;
 
 @end
 
@@ -17,6 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    self.splitAmountLabel.text = @"$0";
 }
 
 
@@ -25,5 +29,19 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)calculateSplitAmount:(UIButton *)sender {
+    
+    NSDecimalNumber *amount = [[NSDecimalNumber alloc]initWithFloat:self.totalAmountTextField.text.floatValue];
+    NSDecimalNumber *numberOfPeople = [[NSDecimalNumber alloc]initWithFloat:self.numberOfPeopleSlider.value];
+    
+    NSDecimalNumber *splitAmount = [amount decimalNumberByDividingBy:numberOfPeople];
+    
+    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc]init];
+    [numberFormatter setFormatterBehavior:NSNumberFormatterBehaviorDefault];
+    [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    
+    self.splitAmountLabel.text = [NSString stringWithFormat:@"$%@", [numberFormatter stringFromNumber:splitAmount] ];
+    
+}
 
 @end
